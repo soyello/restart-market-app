@@ -5,6 +5,7 @@ export interface UserRow extends RowDataPacket {
   name: string;
   email: string;
   image: string | null;
+  user_type: string;
 }
 
 export interface SessionRow extends RowDataPacket {
