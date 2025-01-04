@@ -19,3 +19,19 @@ CREATE TABLE sessions(
   expires DATETIME NOT NULL,
   CONSTRAINT fk_session_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE products(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  image_src VARCHAR(255) NOT NULL,
+  category VARCHAR(255) NOT NULL,
+  user_id VARCHAR(255) NOT NULL,
+  price INT NOT NULL,
+  latitude FLOAT NOT NULL,
+  longitude FLOAT NOT NULL,
+  created_at DATETIME DEFAULT current_timestamp,
+  updated_at DATETIME DEFAULT current_timestamp on update current_timestamp,
+
+  FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+);
