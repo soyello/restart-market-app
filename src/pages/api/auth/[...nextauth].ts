@@ -1,7 +1,7 @@
 import { NextAuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { RowDataPacket } from 'mysql2';
-import pool from '../../../lib/db';
+import bcrypt from 'bcryptjs';
 import NextAuth from 'next-auth/next';
 import MySQLAdapter from '@/lib/mysqlAdapter';
 
@@ -23,26 +23,11 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', tyle: 'password' },
       },
       async authorize(credentials) {
-        const hardcodedUser = {
-          id: '정재연 천재',
-          name: '부자 정재연',
-          email: 'hello@love.com',
-          hashedPassword: '12345',
-          role: 'User',
-        };
         if (!credentials) return null;
-        if (credentials.email === hardcodedUser.email && credentials.password === hardcodedUser.hashedPassword) {
-          return hardcodedUser as User;
-        }
 
-        const [rows] = await pool.query<UserRow[]>(
-          'SELECT id, name, email, user_type, hashed_password FROM users WHERE email=?',
-          [credentials.email]
-        );
+        const user = await MySQLAdapter.getUserByEmailWithPassword(credentials.email);
 
-        const user = rows[0];
-
-        if (user && user.hashded_password) {
+        if (user && (await bcrypt.compare(credentials.password, user.hashed_password!))) {
           return {
             id: user.id,
             name: user.name,
