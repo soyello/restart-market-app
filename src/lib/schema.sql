@@ -8,6 +8,10 @@ CREATE TABLE users(
   user_type ENUM('User','Admin') DEFAULT 'User'
 );
 
+alter table users
+add column created_at timestamp default current_timestamp,
+add column updated_at timestamp default current_timestamp on update current_timestamp;
+
 CREATE TABLE sessions(
   id VARCHAR(255) PRIMARY KEY DEFAULT(UUID()),
   session_token VARCHAR(255) UNIQUE NOT NULL,
