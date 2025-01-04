@@ -4,10 +4,8 @@ import { SessionRow, UserRow } from '@/helper/row';
 import { mapToAdapterSession, mapToAdapterUser } from '@/helper/mapper';
 import { ResultSetHeader } from 'mysql2';
 
-export type CustomAdapterUser = Omit<AdapterUser, 'emailVerified'>;
-
 const MySQLAdapter = {
-  async getUserById(id: string): Promise<CustomAdapterUser | null> {
+  async getUserById(id: string): Promise<AdapterUser | null> {
     if (!id) {
       throw new Error('ID must be provided');
     }
@@ -19,7 +17,7 @@ const MySQLAdapter = {
       throw new Error('Failed to fetch user');
     }
   },
-  async getUserByEmail(email: string): Promise<CustomAdapterUser | null> {
+  async getUserByEmail(email: string): Promise<AdapterUser | null> {
     if (!email) {
       throw new Error('Email must be provided');
     }
@@ -32,16 +30,16 @@ const MySQLAdapter = {
       throw new Error('Failed to fetch user by email');
     }
   },
-  async createUser(user: Omit<CustomAdapterUser, 'id'>): Promise<CustomAdapterUser> {
+  async createUser(user: Omit<AdapterUser, 'id' | 'emailVerified'>): Promise<AdapterUser> {
     const { name, email, image } = user;
     const [result] = await pool.query<ResultSetHeader>('INSERT INTO users (name, email, image) VALUES (?,?,?)', [
       name,
       email,
       image,
     ]);
-    return { id: result.insertId.toString(), name, email, image };
+    return { id: result.insertId.toString(), name, email, emailVerified: null, image };
   },
-  async updateUser(user: Partial<CustomAdapterUser> & { id: string }): Promise<CustomAdapterUser> {
+  async updateUser(user: Partial<AdapterUser> & { id: string }): Promise<AdapterUser> {
     const { id, name, email, image } = user;
     if (!id) {
       throw new Error('User ID is required for updating.');
@@ -74,7 +72,7 @@ const MySQLAdapter = {
   },
   async getSessionAndUser(sessionToken: string): Promise<{
     session: AdapterSession;
-    user: CustomAdapterUser;
+    user: AdapterUser;
   } | null> {
     try {
       const [results] = await pool.query<(SessionRow & UserRow)[]>(

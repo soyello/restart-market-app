@@ -1,12 +1,12 @@
-import { CustomAdapterUser } from '@/lib/mysqlAdapter';
 import { SessionRow, UserRow } from './row';
-import { AdapterSession } from 'next-auth/adapters';
+import { AdapterSession, AdapterUser } from 'next-auth/adapters';
 
-export const mapToAdapterUser = (row: UserRow): CustomAdapterUser => ({
+export const mapToAdapterUser = (row: UserRow): AdapterUser => ({
   id: row.id,
   name: row.name,
   email: row.email,
   image: row.image ?? null,
+  emailVerified: row.emailVerified ?? null,
 });
 
 export const mapToAdapterSession = (row: SessionRow): AdapterSession => ({
