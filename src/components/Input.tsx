@@ -31,10 +31,12 @@ const Input: React.FC<InputProps> = ({
         placeholder=''
         type={type}
         className={`
+          peer
           w-full
           p-4
           pt-6
           font-light
+          border-2
           bg-white
           rounded-md
           outline-none
