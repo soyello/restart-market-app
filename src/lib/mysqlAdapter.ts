@@ -5,7 +5,7 @@ import { mapToAdapterSession, mapToAdapterUser } from '@/helper/mapper';
 import { ResultSetHeader } from 'mysql2';
 
 const MySQLAdapter = {
-  async getUserByEmailWithPassword(email: string): Promise<UserRow | null> {
+  async getUserByEmailWithPassword(email: string): Promise<UserRow> {
     if (!email) {
       throw new Error('Email must be provided');
     }
@@ -14,7 +14,7 @@ const MySQLAdapter = {
         'SELECT id, name, email, image, user_type, hashed_password FROM users WHERE email=?',
         [email]
       );
-      return rows?.[0] || null;
+      return rows?.[0];
     } catch (error) {
       console.error('Error fetching user by email:', error);
       throw new Error('Failed to fetch user by email');
