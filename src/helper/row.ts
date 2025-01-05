@@ -14,3 +14,17 @@ export interface SessionRow extends RowDataPacket {
   user_id: string;
   expires: string;
 }
+
+export interface ProductRow extends RowDataPacket {
+  id: string;
+  title: string;
+  description: string;
+  image_src: string;
+  category: string;
+  latitude: number;
+  longitude: number;
+  price: number;
+  user_id: string;
+  created_at: Date;
+  updated_at: Date;
+}
