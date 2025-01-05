@@ -12,8 +12,6 @@ interface ImageUploadProps {
 
 const ImageUpload = ({ onChange, value }: ImageUploadProps) => {
   const handleUpload = (result: any) => {
-    alert('handleUpload called');
-    console.log('Upload result', result);
     if (result.event === 'success') {
       onChange(result.info.secure_url);
     } else {
