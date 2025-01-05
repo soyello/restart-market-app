@@ -4,7 +4,57 @@ import { SessionRow, UserRow } from '@/helper/row';
 import { mapToAdapterSession, mapToAdapterUser } from '@/helper/mapper';
 import { ResultSetHeader } from 'mysql2';
 
+interface Product {
+  id: string;
+  title: string;
+  description: string;
+  imageSrc: string;
+  category: string;
+  latitude: number;
+  longitude: number;
+  price: number;
+  userId: string;
+}
+
 const MySQLAdapter = {
+  async createProduct({
+    title,
+    description,
+    imageSrc,
+    category,
+    latitude,
+    longitude,
+    price,
+    userId,
+  }: Omit<Product, 'id'>): Promise<Product> {
+    if (!title || !description || !imageSrc || !category || !latitude || !longitude || !price || !userId) {
+      throw new Error('All product fields are required');
+    }
+    try {
+      const [result] = await pool.query<ResultSetHeader>(
+        `
+        INSERT INTO products
+        (title, description, image_src, category, latitude, longitude, price, user_id)
+        VALUES (?,?,?,?,?,?,?,?)
+        `,
+        [title, description, imageSrc, category, latitude, longitude, price, userId]
+      );
+      return {
+        id: result.insertId.toString(),
+        title,
+        description,
+        imageSrc,
+        category,
+        latitude,
+        longitude,
+        price,
+        userId,
+      };
+    } catch (error) {
+      console.error('Error creating product:', error);
+      throw new Error('An error occurred whilte creating the product.');
+    }
+  },
   async getUserByEmailWithPassword(email: string): Promise<UserRow> {
     if (!email) {
       throw new Error('Email must be provided');
