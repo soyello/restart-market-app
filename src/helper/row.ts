@@ -29,3 +29,13 @@ export interface ProductRow extends RowDataPacket {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface ProductUserRow extends RowDataPacket {
+  userId: string;
+  userName: string | null;
+  useremail: string;
+  userImage: string | null;
+  usertype: string;
+}
+
+export type ProductWithUserRow = ProductRow & ProductUserRow;
