@@ -3,6 +3,7 @@ import ProductHead from '@/components/products/ProductHead';
 import ProductInfo from '@/components/products/ProductInfo';
 import { serializedProductWithUser } from '@/helper/serializedProduct';
 import { Product } from '@/helper/type';
+import getCurrentUser from '@/lib/getCurrentUser';
 import getProductById from '@/lib/getProductById';
 import { AdapterUser } from 'next-auth/adapters';
 import dynamic from 'next/dynamic';
@@ -13,11 +14,27 @@ interface Params {
 }
 
 interface ProductClientProps {
-  product: Product | null;
-  creator: AdapterUser | null;
+  product: {
+    id: string;
+    title: string;
+    description: string;
+    imageSrc: string;
+    category: string;
+    latitude: number;
+    longitude: number;
+    price: number;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    user: {
+      id: string;
+      name: string;
+    };
+  };
+  currentUser: AdapterUser | null;
 }
 
-const ProductPage = ({ product, creator }: ProductClientProps) => {
+const ProductPage = ({ product, currentUser }: ProductClientProps) => {
   const router = useRouter();
   const KakaoMap = dynamic(() => import('../../components/KakaoMap'), {
     ssr: false,
@@ -27,8 +44,8 @@ const ProductPage = ({ product, creator }: ProductClientProps) => {
   }
   return (
     <div className='max-w-screen-lg mx-auto'>
-      <div className='flex flex-col gap-6'>
-        <ProductHead />
+      <div className='flex flex-col gap-6 mt-10'>
+        <ProductHead title={product.title} imageSrc={product.imageSrc} id={product.id} currentUser={currentUser} />
         <div className='grid grid-cols-1 mt-6 md:grid-cols-2 md:gap-10'>
           <ProductInfo />
           <div>
@@ -49,6 +66,15 @@ export async function getServerSideProps(context: { params: Params; req: any; re
   const { params, req, res } = context;
 
   try {
+    const currentUser = await getCurrentUser(req, res);
+    if (!currentUser) {
+      return {
+        redirect: {
+          destination: '/auth/login',
+          permanent: false,
+        },
+      };
+    }
     const productId = params.productId;
     if (!productId) {
       return {
@@ -61,7 +87,7 @@ export async function getServerSideProps(context: { params: Params; req: any; re
     return {
       props: {
         product: serializedProduct,
-        creator: product?.user.name,
+        currentUser,
       },
     };
   } catch (error) {
