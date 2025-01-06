@@ -3,13 +3,15 @@ import EmptyState from '@/components/EmptyState';
 import FloatingButton from '@/components/FloatingButton';
 import ProductCard from '@/components/ProductCard';
 import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
+import { useState } from 'react';
 
 interface HomeProps {
   products: any[];
   currentUser: any | null;
 }
-export default function Home({ products, currentUser }: HomeProps) {
-  console.log(products);
+export default function Home({ products, currentUser: initialUser }: HomeProps) {
+  const [currentUser, setCurrentUser] = useState(initialUser);
   return (
     <Container>
       {products.length === 0 ? (
@@ -29,7 +31,7 @@ export default function Home({ products, currentUser }: HomeProps) {
               '
           >
             {products.map((product) => (
-              <ProductCard currentUser={currentUser} key={product.id} data={product} />
+              <ProductCard currentUser={currentUser} key={product.id} data={product} setCurrentUser={setCurrentUser} />
             ))}
           </div>
         </>
@@ -41,6 +43,18 @@ export default function Home({ products, currentUser }: HomeProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
+    const session = await getSession(context);
+
+    const userResponse = await fetch('http://localhost:3000/api/currentUser', {
+      headers: { cookie: context.req.headers.cookie || '' },
+    });
+
+    if (!userResponse.ok) {
+      throw new Error('Failed to fetch currentUser');
+    }
+
+    const currentUser = await userResponse.json();
+
     const { query } = context;
 
     const response = await fetch(
@@ -55,6 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: {
         products,
+        currentUser,
       },
     };
   } catch (error) {
@@ -62,6 +77,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: {
         products: [],
+        currentUser: null,
       },
     };
   }

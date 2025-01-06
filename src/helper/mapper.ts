@@ -9,6 +9,7 @@ export const mapToAdapterUser = (row: UserRow): AdapterUser => ({
   image: row.image ?? null,
   emailVerified: row.emailVerified ?? null,
   role: row.user_type,
+  favoriteIds: row.favorite_ids,
 });
 
 export const mapToAdapterSession = (row: SessionRow): AdapterSession => ({
