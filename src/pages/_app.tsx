@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 import { createContext, useEffect, useState } from 'react';
 import Script from 'next/script';
+import ToastProvider from '@/components/ToastProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,6 +24,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       <KakaoContext.Provider value={{ isKakaoLoaded }}>
         <div className={inter.className}>
           <Navbar />
+          <ToastProvider />
           <Component {...pageProps} />;
           <Script
             src='//dapi.kakao.com/v2/maps/sdk.js?appkey=9268d3bcf6b80dc4ae2dd0de7e26caab&libraries=services,clusterer&autoload=false'
