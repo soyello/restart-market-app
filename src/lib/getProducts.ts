@@ -4,14 +4,16 @@ export interface ProductsParams {
   latitude?: number;
   longitude?: number;
   category?: string;
-  page?: number;
-  skip?: number;
+  page?: number | string;
+  itemsPerPage?: number | string;
 }
 
 export default async function getProducts(params: ProductsParams) {
   try {
-    const { latitude, longitude, category, page = 1, skip } = params;
-    const itemsPerPage = 5;
+    const { latitude, longitude, category, page = 1, itemsPerPage } = params;
+
+    const numericPage = Number(page);
+    const numericItemsPerPage = Number(itemsPerPage) || 5;
 
     let query: Record<string, any> = {};
     if (category) {
@@ -30,7 +32,7 @@ export default async function getProducts(params: ProductsParams) {
       };
     }
     try {
-      const result = await MySQLAdapter.getProducts(query, page, skip || itemsPerPage);
+      const result = await MySQLAdapter.getProducts(query, numericPage, numericItemsPerPage);
       if (!result || !result.data || typeof result.totalItems !== 'number') {
         return { data: [], totalItems: 0 };
       }

@@ -1,4 +1,5 @@
 import usePagination from '@lucasmogari/react-pagination';
+import PaginationLink from './PaginationLink';
 
 interface PaginationProps {
   page: number;
@@ -7,7 +8,7 @@ interface PaginationProps {
 }
 
 const Pagination = ({ page, totalItems, perPage }: PaginationProps) => {
-  const { fromItem, toItem, getPageItem, totalPages } = usePagination({
+  const { getPageItem, totalPages } = usePagination({
     totalItems: totalItems,
     page: page,
     itemsPerPage: perPage,
@@ -18,25 +19,34 @@ const Pagination = ({ page, totalItems, perPage }: PaginationProps) => {
   const prevPage = Math.max(page - 1, firstPage);
   const arr = new Array(totalPages + 2);
 
-  console.log('getPageItems', getPageItem);
-  console.log('totalPages', totalPages);
-
   return (
-    <div>
-      Item {fromItem} - {toItem}
+    <div className='flex items-center justify-center gap-2 mt-4'>
       {[...arr].map((_, i) => {
         const { page, disabled, current } = getPageItem(i);
         console.log('page,disabled,currenct', page, disabled, current);
 
         if (page === 'previous') {
-          return <span key={i}>{'<'}</span>;
+          return (
+            <PaginationLink disabled={disabled} page={prevPage} key={i}>
+              {'<'}
+            </PaginationLink>
+          );
         }
         if (page === 'next') {
-          return <span key={i}>{'>'}</span>;
+          return (
+            <PaginationLink disabled={disabled} page={nextPage} key={i}>
+              {'>'}
+            </PaginationLink>
+          );
         }
         if (page === 'gap') {
           return <span key={i}>...</span>;
         }
+        return (
+          <PaginationLink active={current} page={page} key={i}>
+            {page}
+          </PaginationLink>
+        );
       })}
     </div>
   );

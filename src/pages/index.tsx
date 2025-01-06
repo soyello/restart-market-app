@@ -50,12 +50,15 @@ export default function Home({ products, currentUser: initialUser, page }: HomeP
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const { req, res, query } = context;
+    const { query } = context;
 
     const page = query.page ? Number(query.page) : 1;
 
+    const itemsPerPage = 5;
+    const skip = (page - 1) * itemsPerPage;
+
     const userResponse = await fetch('http://localhost:3000/api/currentUser', {
-      headers: { cookie: req.headers.cookie || '' },
+      headers: { cookie: context.req.headers.cookie || '' },
     });
 
     if (!userResponse.ok) {
@@ -65,7 +68,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const currentUser = await userResponse.json();
 
     const productResponse = await fetch(
-      `http://localhost:3000/api/products?${new URLSearchParams(query as Record<string, string>).toString()}`
+      `http://localhost:3000/api/products?page=${page}&skip=${skip}&itemsPerPage=${itemsPerPage}`
     );
 
     if (!productResponse.ok) {
@@ -84,7 +87,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     console.error('Error fetching products:', error);
     return {
       props: {
-        products: [],
+        products: { data: [], totalItems: 0 },
         currentUser: null,
         page: 1,
       },
