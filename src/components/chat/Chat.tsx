@@ -51,7 +51,7 @@ const Chat = ({ currentUser, receiver, setLayout }: ChatProps) => {
           conversation.messages.map((message) => {
             return (
               <Message
-                key={message.id}
+                key={message.messageId}
                 isSender={message.sender.id === currentUser.id}
                 messageText={message.text || null}
                 messageImage={message.image || null}

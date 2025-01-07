@@ -30,7 +30,7 @@ export type TConversation = {
   users: AdapterUser[];
 };
 export type Message = {
-  id: string;
+  messageId: string;
   text?: string;
   image?: string;
   conversationId: string;
