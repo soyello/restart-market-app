@@ -1,3 +1,5 @@
+import { AdapterUser } from 'next-auth/adapters';
+
 export interface Product {
   id: string;
   title: string;
@@ -17,3 +19,23 @@ type Serialized<T> = {
 };
 
 export type SerializedProduct = Serialized<Product>;
+
+export type TUserWithChat = AdapterUser & {
+  conversations: TConversation[];
+};
+
+export type TConversation = {
+  id: string;
+  messages: Message[];
+  users: AdapterUser[];
+};
+export type Message = {
+  id: string;
+  text?: string;
+  image?: string;
+  senderId: string;
+  receiverId: string;
+  conversationId: string;
+  createdAt: Date;
+  updatedAt?: Date;
+};

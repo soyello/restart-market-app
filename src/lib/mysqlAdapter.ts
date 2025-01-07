@@ -50,7 +50,7 @@ const MySQLAdapter = {
       LEFT JOIN
         users sender ON c.sender_id = sender.id
       LEFT JOIN
-        user receiver ON c.receiver_id = receiver.id
+        users receiver ON c.receiver_id = receiver.id
       ORDER BY
         m.created_at ASC;
         `;
