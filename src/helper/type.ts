@@ -33,9 +33,19 @@ export type Message = {
   id: string;
   text?: string;
   image?: string;
-  senderId: string;
-  receiverId: string;
   conversationId: string;
   createdAt: Date;
   updatedAt?: Date;
+  sender: {
+    id: string;
+    name: string;
+    email: string;
+    image: string | null;
+  };
+  receiver: {
+    id: string;
+    name: string;
+    email: string;
+    image: string | null;
+  };
 };
