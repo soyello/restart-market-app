@@ -35,3 +35,27 @@ CREATE TABLE products(
 
   FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE conversations (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAr(255) DEFAULT NULL,
+  sender_id VARCHAR(255) NOT NULL,
+  receiver_id VARCHAR(255) NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (sender_id) REFERENCES users(id),
+  FOREIGN KEY (receiver_id) REFERENCES users(id)
+);
+
+CREATE TABLE messages(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  text TEXT DEFAULT NULL,
+  image VARCHAR(255) DEFAULT NULL,
+  sender_id VARCHAR(255) NOT NULL,
+  receiver_id VARCHAR(255) NOT NULL,
+  conversation_id INT NOT NULL,
+  FOREIGN KEY (sender_id) REFERENCES users(id),
+  FOREIGN KEY (receiver_id) REFERENCES users(id),
+  FOREIGN KEY (conversation_id) REFERENCES conversations(id)
+)
