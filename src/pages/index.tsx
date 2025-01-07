@@ -2,7 +2,7 @@ import Container from '@/components/Container';
 import EmptyState from '@/components/EmptyState';
 import FloatingButton from '@/components/FloatingButton';
 import Pagination from '@/components/Pagination';
-import ProductCard from '@/components/ProductCard';
+import ProductCard from '@/components/products/ProductCard';
 import Categories from '@/components/categories/Categories';
 import { PRODUCTS_PER_PAGE } from '@/constants';
 import { Product } from '@/helper/type';
