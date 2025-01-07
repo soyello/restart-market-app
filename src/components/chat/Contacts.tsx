@@ -24,19 +24,17 @@ const Contacts = ({ users, currentUser, setLayout, setReceiver }: ContactsProps)
         {users.length > 0 &&
           users
             .filter((user) => user.id !== currentUser?.id)
-            .map((user) => {
-              return (
-                <div
-                  key={user.id}
-                  onClick={() => {
-                    filterMessages(user.id, user.name!, user.image!);
-                    setLayout(true);
-                  }}
-                >
-                  <User user={user} currentUserId={currentUser.id} />
-                </div>
-              );
-            })}
+            .map((user) => (
+              <div
+                key={user.id}
+                onClick={() => {
+                  filterMessages(user.id, user.name!, user.image!);
+                  setLayout(true);
+                }}
+              >
+                <User user={user} currentUserId={currentUser.id} />
+              </div>
+            ))}
       </div>
     </div>
   );

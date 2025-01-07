@@ -68,29 +68,10 @@ export const mapRowToUserConversation = (row: UserConversationRow) => {
     name: row.userName,
     email: row.userEmail,
     image: row.userImage,
-    conversationId: row.conversationId,
-    conversationName: row.conversationName,
-    conversationCreatedAt: row.conversationCreatedAt,
-    messageId: row.messaegId,
-    messageText: row.messageText,
-    messageImage: row.messageImage,
-    messageCreatedAt: row.messageCreatedAt,
-    messageUpdatedAt: row.messageUpdatedAt,
-    sender: row.senderId
-      ? {
-          id: row.senderId,
-          name: row.senderName,
-          email: row.senderEmail,
-          image: row.senderImage,
-        }
-      : null,
-    receiver: row.receiverId
-      ? {
-          id: row.receiverId,
-          name: row.receiverName,
-          email: row.recieverEmail,
-          image: row.receiverImage,
-        }
-      : null,
+    conversations: Array.isArray(row.conversations)
+      ? row.conversations
+      : typeof row.conversations === 'string'
+      ? JSON.parse(row.conversations)
+      : [],
   };
 };
