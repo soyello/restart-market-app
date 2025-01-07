@@ -1,3 +1,4 @@
+import Contacts from '@/components/chat/Contacts';
 import { TUserWithChat } from '@/helper/type';
 import getCurrentUser from '@/lib/getCurrentUser';
 import axios from 'axios';
@@ -59,7 +60,9 @@ const ChatPage = ({ currentUser }: ChatClientProps) => {
   return (
     <>
       <div className='grid gird-cols-[1fr] md:grid-cols-[300px_1fr]'>
-        <section className={`${layout ? 'hidden' : 'md:flex'}`}>Contact Component</section>
+        <section className={`${layout ? 'hidden' : 'md:flex'}`}>
+          <Contacts users={users} currentUser={currentUserWithChat} setLayout={setLayout} setReceiver={setReceiver} />
+        </section>
         <section className={`${layout ? 'md:hidden' : 'flex'}`}>Chat Component</section>
       </div>
     </>
