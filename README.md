@@ -1,40 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Next.js로 중고마켓 페이지 제작
 
-## Getting Started
+## 1. Page routing 기반으로 제작
 
-First, run the development server:
+## 2. 인증 및 인가 기능 구현
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- MySQL과 NextAuth 사용하여 구현
+- middleware를 통해 권한이 있는 사용자만 admin, user 페이지 접근 가능
+- 로그인 이후 user의 token, session 생성
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  ![RegisterPage](./public/RegisterPage.png)
+  ![LoginPage](./public/LoginPage.png)
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## 3. 상품 업로드 페이지
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- Cloudinary를 사용한 이미지 업로드 기능
+  ![ProductUploadPage1](./public/ProductUploadPage1.png)
+  ![ProductUploadPage2](./public/ProductUploadPage2.png)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+- Kakao Map을 사용한 지역 설정 기능
+  ![ProductUploadPage4](./public/ProductUploadPage4.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 카테고리 설정 기능
+  ![ProductUploadPage3](./public/ProductUploadPage3.png)
 
-## Learn More
+## 4. 홈페이지
 
-To learn more about Next.js, take a look at the following resources:
+- Product Card 생성
+- Favorite 기능 구현
+  ![HomePageFavorite](./public/HomePageFavorite.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+- 카테고리 분류 기능 구현
+  ![HomePageCategories](./public/HomePageCategories.png)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Pagination 기능 구현
 
-## Deploy on Vercel
+## 5. 상품 상세 페이지
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 상세 이미지
+- 지정 위치 및 기타 데이터 확인
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+  ![ProductDetailPage1](./public/ProductDetailPage1.png)
+  ![ProductDetailPage2](./public/ProductDetailPage2.png)
+
+## 6. 채팅 페이지
+
+- useSWR 사용
+- User 정보
+- 입력창 구현 - string, image 입력 기능
+
+  ![ChatPageUser](./public/ChatPageUser.png)
+  ![ChatPageInput](./public/ChatPageInput.png)
+  ![ChatPageImage](./public/ChatPageImage.png)
